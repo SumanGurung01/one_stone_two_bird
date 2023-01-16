@@ -98,6 +98,16 @@ def handle_collision(birds , stone):
             if stone.y <= bird.y+50 and stone.y+20 >= bird.y:
                 birds.pop(i)
 
+def welcome_screen(win):
+    background = pygame.transform.scale( pygame.image.load("assets/bg.jpg"), (600,600))
+    win.blit(background , (0 , 0))
+    
+    title = pygame.transform.scale( pygame.image.load("assets/title.png"), (300,180))
+    win.blit(title , (WIN_WIDTH//2-150, WIN_HEIGHT//2-90))
+    
+    pygame.display.update()
+
+
 def draw(win , slingblade , birds , stone , level):
 
     background = pygame.transform.scale( pygame.image.load("assets/bg.jpg"), (600,600))
@@ -126,6 +136,18 @@ def main():
     level=1
     run = True 
     clock = pygame.time.Clock()
+
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+        welcome_screen(WIN)
+        keys = pygame.key.get_pressed() 
+        if keys[pygame.K_RETURN]:
+            run = False    
+    
+    run = True
+
     while run:
         if level==1:
             print("level 1")

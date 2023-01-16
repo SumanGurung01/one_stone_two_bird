@@ -11,7 +11,6 @@ import random
 # bird.height :  50
 
 pygame.init()
-level=1
 
 # CONSTANTS
 WIN_HEIGHT,WIN_WIDTH = 600,600
@@ -22,11 +21,12 @@ pygame.display.set_caption("One Stone Two Bird")
 SCORE_FONT = pygame.font.SysFont("comicsans",25)
 
 class Slingblade():
-    def __init__(self , x , y ):
+    def __init__(self , x , y , shot):
         self.x = x
         self.y = y
         self.width = 80
         self.height = 100
+        self.shot = shot
     def move(self , direction ):
         if direction == "left":
             self.x -= 5 
@@ -41,7 +41,6 @@ class Stone():
         self.height = 20
         self.image = pygame.image.load("assets/stone.png")  
         self.release = 0
-        self.count = 1
     def move(self):
         self.y -= 5 
 
@@ -82,23 +81,33 @@ def handle_slingblade_stone_movement(keys , slingblade , stone):
         slingblade.move(direction = "right")
         if not stone.release: 
             stone.x = slingblade.x+30
-    if keys[pygame.K_SPACE]:
+    if stone.y<=0 and slingblade.shot>0:
+        stone.release=0
+        slingblade.shot-=1
+        stone.x = slingblade.x+30
+        stone.y = slingblade.y+50
+    if keys[pygame.K_SPACE] and slingblade.shot>0:
         stone.release=1
-        stone.count-=1
     if stone.release:
         stone.move()
+    
 
 def handle_collision(birds , stone):
-    global level
     for i , bird in enumerate(birds , start=0):
         if stone.x+10 >= bird.x and stone.x+10 <= bird.x+50:
             if stone.y <= bird.y+50 and stone.y+20 >= bird.y:
                 birds.pop(i)
-                level += 1
 
-def draw(win , slingblade , birds , stone):
+def draw(win , slingblade , birds , stone , level):
+
     background = pygame.transform.scale( pygame.image.load("assets/bg.jpg"), (600,600))
     win.blit(background , (0 , 0))
+    
+    board = pygame.transform.scale( pygame.image.load("assets/board.png"), (200,40))
+    win.blit(board , (400 , 0))
+
+    board_text = SCORE_FONT.render(f"Stone x {slingblade.shot} - Level x {level}", 1 , (0,0,0))
+    win.blit(board_text,(420, 12))
 
     slingblade_sprite = pygame.transform.scale( pygame.image.load("assets/slingblade.png"), (80,100))
     win.blit(slingblade_sprite , (slingblade.x , slingblade.y))
@@ -114,23 +123,30 @@ def draw(win , slingblade , birds , stone):
     pygame.display.update()
 
 def main():
+    level=1
     run = True 
     clock = pygame.time.Clock()
-    
-    global level
     while run:
         if level==1:
             print("level 1")
             birds = []
-            slingblade = Slingblade(WIN_WIDTH//2 - 40 , WIN_HEIGHT - 100)
+            slingblade = Slingblade(WIN_WIDTH//2 - 40 , WIN_HEIGHT - 100, 1)
             birds.append(Bird(random.randrange(50,550),100))
             stone = Stone(slingblade.x + 30 , slingblade.y + 50)  
         if level==2:
             print("level 2")
             birds = []
-            slingblade = Slingblade(WIN_WIDTH//2 - 40 , WIN_HEIGHT - 100)
+            slingblade = Slingblade(WIN_WIDTH//2 - 40 , WIN_HEIGHT - 100 , 2)
             for i in range(1,3):
-                bird = Bird(random.randrange(50,550),i*60)
+                bird = Bird(random.randrange(50,550),random.randrange(200 , 300))
+                birds.append(bird)
+            stone = Stone(slingblade.x + 30 , slingblade.y + 50) 
+        if level==3:
+            print("level 3")
+            birds = []
+            slingblade = Slingblade(WIN_WIDTH//2 - 40 , WIN_HEIGHT - 100 , 3)
+            for i in range(1,4):
+                bird = Bird(random.randrange(50,550),random.randrange(200 , 300))
                 birds.append(bird)
             stone = Stone(slingblade.x + 30 , slingblade.y + 50)     
         
@@ -138,11 +154,12 @@ def main():
 
         while isrunning:
             clock.tick(60) 
-            draw(WIN,slingblade,birds,stone)
+            draw(WIN,slingblade,birds,stone,level)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
             if len(birds) == 0:
+                level+=1
                 isrunning = False
             keys = pygame.key.get_pressed() 
             handle_slingblade_stone_movement(keys , slingblade , stone)

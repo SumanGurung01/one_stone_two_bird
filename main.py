@@ -170,7 +170,24 @@ def main():
             for i in range(1,4):
                 bird = Bird(random.randrange(50,550),random.randrange(200 , 300))
                 birds.append(bird)
-            stone = Stone(slingblade.x + 30 , slingblade.y + 50)     
+            stone = Stone(slingblade.x + 30 , slingblade.y + 50)
+        if level==4:
+            print("level 4")
+            birds = []
+            slingblade = Slingblade(WIN_WIDTH//2 - 40 , WIN_HEIGHT - 100 , 3)
+            for i in range(1,5):
+                bird = Bird(random.randrange(50,550),random.randrange(200 , 300))
+                birds.append(bird)
+            stone = Stone(slingblade.x + 30 , slingblade.y + 50)  
+        
+        if level==5:
+            print("level 5")
+            birds = []
+            slingblade = Slingblade(WIN_WIDTH//2 - 40 , WIN_HEIGHT - 100 , 2)
+            for i in range(1,5):
+                bird = Bird(random.randrange(50,550),random.randrange(200 , 300))
+                birds.append(bird)
+            stone = Stone(slingblade.x + 30 , slingblade.y + 50)       
         
         isrunning = True
 

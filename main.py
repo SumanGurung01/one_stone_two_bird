@@ -19,6 +19,7 @@ WIN = pygame.display.set_mode((WIN_WIDTH , WIN_HEIGHT))
 pygame.display.set_caption("One Stone Two Bird")
 
 SCORE_FONT = pygame.font.SysFont("comicsans",25)
+MSG_FONT = pygame.font.SysFont("comicsans" , 30)
 
 class Slingblade():
     def __init__(self , x , y , shot):
@@ -102,8 +103,23 @@ def welcome_screen(win):
     background = pygame.transform.scale( pygame.image.load("assets/bg.jpg"), (600,600))
     win.blit(background , (0 , 0))
     
-    title = pygame.transform.scale( pygame.image.load("assets/title.png"), (300,180))
+    title = pygame.transform.scale( pygame.image.load("assets/title.png"), (300,150))
     win.blit(title , (WIN_WIDTH//2-150, WIN_HEIGHT//2-90))
+
+    text = MSG_FONT.render(f"Press Enter to Start", 1 , (0,0,0))
+    win.blit(text,(WIN_WIDTH//2 - 90, WIN_HEIGHT//2 + 100))
+    
+    pygame.display.update()
+
+def retry_screen(win):
+    background = pygame.transform.scale( pygame.image.load("assets/bg.jpg"), (600,600))
+    win.blit(background , (0 , 0))
+    
+    text1 = MSG_FONT.render(f"GAMEOVER", 1 , (0,0,0))
+    win.blit(text1,(WIN_WIDTH//2 - 50, WIN_HEIGHT//2))
+
+    text2 = MSG_FONT.render(f"Press Enter to Retry", 1 , (0,0,0))
+    win.blit(text2,(WIN_WIDTH//2 - 90 , WIN_HEIGHT//2 + 40))
     
     pygame.display.update()
 
@@ -135,6 +151,7 @@ def draw(win , slingblade , birds , stone , level):
 def main():
     level=1
     run = True 
+    gameover = 0
     clock = pygame.time.Clock()
 
     while run:
@@ -149,6 +166,7 @@ def main():
     run = True
 
     while run:
+        gameover = 0
         if level==1:
             print("level 1")
             birds = []
@@ -203,6 +221,20 @@ def main():
             keys = pygame.key.get_pressed() 
             handle_slingblade_stone_movement(keys , slingblade , stone)
             handle_collision(birds , stone) 
+
+            if len(birds)>0 and slingblade.shot == 0:
+                gameover = 1
+                isrunning = False
+        
+        if gameover==1:
+            while True:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                retry_screen(WIN)
+                keys = pygame.key.get_pressed() 
+                if keys[pygame.K_RETURN]:
+                    break   
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

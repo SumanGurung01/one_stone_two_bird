@@ -222,7 +222,7 @@ def main():
 
     while run:
         gameover = 0
-        
+
         if level==1:
             print("level 1")
             birds = []
@@ -283,13 +283,55 @@ def main():
                 bird = Bird(random.randrange(50,550),random.randrange(200 , 300))
                 birds.append(bird)
             stone = Stone(slingblade.x + 30 , slingblade.y + 50)  
-
+        
         if level==7:
             print("level 7")
             birds = []
+            slingblade = Slingblade(WIN_WIDTH//2 - 40 , WIN_HEIGHT - 100 , 1)
+            for i in range(1,6):
+                bird = Bird(random.randrange(50,550),random.randrange(210 , 400))
+                birds.append(bird)
+            birds.append(Bird(random.randrange(50,550),random.randrange(10 , 50)))
             blocks = []
-            slingblade = Slingblade(WIN_WIDTH//2 - 40 , WIN_HEIGHT - 100 , 2)
-            for i in range(1,5):
+            blocks.append(Block(300,100))
+            stone = Stone(slingblade.x + 30 , slingblade.y + 50)
+        
+        if level==8:
+            print("level 8")
+            birds = []
+            slingblade = Slingblade(WIN_WIDTH//2 - 40 , WIN_HEIGHT - 100 , 1)
+            for i in range(1,6):
+                bird = Bird(random.randrange(50,550),random.randrange(210 , 400))
+                birds.append(bird)
+            birds.append(Bird(random.randrange(50,550),random.randrange(10 , 50)))
+            birds.append(Bird(random.randrange(50,550),random.randrange(10 , 50)))
+            blocks = []
+            blocks.append(Block(300,100))
+            stone = Stone(slingblade.x + 30 , slingblade.y + 50)
+
+        if level==9:
+            print("level 9")
+            birds = []
+            slingblade = Slingblade(WIN_WIDTH//2 - 40 , WIN_HEIGHT - 100 , 4)
+            for i in range(1,6):
+                bird = Bird(random.randrange(50,550),random.randrange(210 , 400))
+                birds.append(bird)
+            birds.append(Bird(random.randrange(50,550),random.randrange(10 , 50)))
+            birds.append(Bird(random.randrange(50,550),random.randrange(10 , 50)))
+            birds.append(Bird(random.randrange(50,550),random.randrange(10 , 50)))
+            birds.append(Bird(random.randrange(50,550),random.randrange(10 , 50)))
+            blocks = []
+            blocks.append(Block(50,100))
+            blocks.append(Block(250,100))
+            blocks.append(Block(450,100))
+            stone = Stone(slingblade.x + 30 , slingblade.y + 50) 
+
+        if level==10:
+            print("level 10")
+            birds = []
+            blocks = []
+            slingblade = Slingblade(WIN_WIDTH//2 - 40 , WIN_HEIGHT - 100 , 3)
+            for i in range(1,7):
                 bird = Bird(random.randrange(50,550),random.randrange(200 , 300))
                 birds.append(bird)
             stone = Stone(slingblade.x + 30 , slingblade.y + 50)   
@@ -313,7 +355,7 @@ def main():
                 gameover = 1
                 isrunning = False
             
-            if level > 7 : 
+            if level > 10 : 
                 won = True
                 isrunning = False
 
